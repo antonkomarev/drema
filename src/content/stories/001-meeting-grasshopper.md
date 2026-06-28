@@ -1,6 +1,6 @@
 ---
 number: 1
-title: "Кузнечик"
+title: "Знакомство с Кузнечиком"
 place: "луг"
 characters: ["grasshopper"]
 things: ["spiderweb"]

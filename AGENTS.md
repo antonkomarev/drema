@@ -78,11 +78,11 @@
 
 ## 4. Что сделать ПОСЛЕ написания (обновить память)
 
-1. **Сказка** → новый файл `src/content/stories/NN-<id-героя>.md`:
+1. **Сказка** → новый файл `src/content/stories/NNN-meeting-<id-героя>.md` (трёхзначный номер + `meeting-` + английский id героя, например `002-meeting-water-strider.md`):
    ```yaml
    ---
    number: 2
-   title: "Водомерка"
+   title: "Знакомство с Водомеркой"
    place: "озеро"
    characters: ["water-strider"]   # id новых друзей
    things: []                       # id новых вещей
