@@ -5,12 +5,23 @@
 #        firstInStory, facts[], leadsToCharacter (имя ещё не встреченного существа,
 #        которое мельком упомянули — будущее знакомство; необязательно).
 
+snail-trail:
+  name: Серебристый след
+  emoji: ✨
+  whatIsIt: Блестящий след, который улитка оставляет на листьях, когда ползёт
+  learnedFrom: snail
+  firstInStory: 1
+  facts:
+    - Улитка оставляет его всюду, где проползёт.
+    - По следу всегда можно найти, где побывала улитка.
+    - На солнышке он поблёскивает серебром.
+
 spiderweb:
   name: Паутина
   emoji: 🕸️
   whatIsIt: Тонкие липкие нити, натянутые между травинками
   learnedFrom: grasshopper
-  firstInStory: 1
+  firstInStory: 2
   leadsToCharacter: Паук
   facts:
     - Это липкие нити — в них легко запутаться.
