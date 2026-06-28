@@ -42,10 +42,10 @@ const teacher = thing.learnedFrom ? getCharacter(thing.learnedFrom) : undefined;
     {firstStory && (
       <p style="color:var(--muted)">
         Впервые — в сказке{' '}
-        <a href={`${base}/skazki/${firstStory.data.number}`}>«{firstStory.data.title}»</a>.
+        <a href={`${base}/tales/${firstStory.slug}`}>«{firstStory.data.title}»</a>.
       </p>
     )}
   </article>
 
-  <nav class="pager"><a href={`${base}/pamyat`}>← Вся память</a><span></span></nav>
+  <nav class="pager"><a href={`${base}/memories`}>← Вся память</a><span></span></nav>
 </Base>

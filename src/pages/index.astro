@@ -8,7 +8,7 @@ const stories = (await getCollection('stories')).sort((a, b) => a.data.number - 
 <Base title="Мышонок Мышь — сказки">
   <section class="hero">
     <div class="kicker">сказки у камыша</div>
-    <h1>Мышонок Мышь</h1>
+    <h1>Мышонок Мыш-мышь</h1>
     <p>Маленький мышонок, у которого очень добрая душа. Каждый день он выходит из норки, знакомится с новым жителем своего мира и помогает ему.</p>
     <p class="couplet">Жил да был мышонок Мышь,<br />Рос он там, где шумит камыш.</p>
   </section>
@@ -17,7 +17,7 @@ const stories = (await getCollection('stories')).sort((a, b) => a.data.number - 
   <div id="continue-slot"></div>
   <div class="cards">
     {stories.map((s) => (
-      <a class="card" data-story={s.data.number} data-title={s.data.title} href={`${base}/skazki/${s.data.number}`}>
+      <a class="card" data-story={s.data.number} data-title={s.data.title} href={`${base}/tales/${s.slug}`}>
         <span class="read-badge" hidden>✓ прочитано</span>
         <div class="num">Сказка {s.data.number}</div>
         <h3>{s.data.title}</h3>
@@ -47,7 +47,7 @@ const stories = (await getCollection('stories')).sort((a, b) => a.data.number - 
         if (slot) {
           var a = document.createElement('a');
           a.className = 'continue';
-          a.href = base + '/skazki/' + h.last;
+          a.href = card ? card.getAttribute('href') : (base + '/tales/' + h.last);
           a.textContent = 'Продолжить чтение: «' + title + '» →';
           slot.appendChild(a);
         }

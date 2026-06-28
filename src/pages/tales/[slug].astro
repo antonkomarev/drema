@@ -7,7 +7,7 @@ const base = import.meta.env.BASE_URL;
 export async function getStaticPaths() {
   const stories = await getCollection('stories');
   return stories.map((s) => ({
-    params: { number: String(s.data.number) },
+    params: { slug: s.slug },
     props: { story: s },
   }));
 }
@@ -30,11 +30,11 @@ const next = all[idx + 1];
     <div class="meta">Прогулка: {story.data.place}</div>
   </div>
 
-  <button id="mark-read" class="mark-read" aria-pressed="false">Отметить прочитанной</button>
-
   <article class="story">
     <Content />
   </article>
+
+  <button id="mark-read" class="mark-read" aria-pressed="false">Отметить прочитанной</button>
 
   {(chars.length > 0 || things.length > 0) && (
     <section class="learned">
@@ -66,8 +66,8 @@ const next = all[idx + 1];
   )}
 
   <nav class="pager">
-    {prev ? <a href={`${base}/skazki/${prev.data.number}`}>← {prev.data.title}</a> : <span></span>}
-    {next ? <a href={`${base}/skazki/${next.data.number}`}>{next.data.title} →</a> : <span></span>}
+    {prev ? <a href={`${base}/tales/${prev.slug}`}>← {prev.data.title}</a> : <span></span>}
+    {next ? <a href={`${base}/tales/${next.slug}`}>{next.data.title} →</a> : <span></span>}
   </nav>
 
   <script is:inline define:vars={{ storyNumber: story.data.number }}>
