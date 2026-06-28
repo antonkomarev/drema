@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const base = import.meta.env.BASE_URL;
+
+const stories = (await getCollection('stories')).sort((a, b) => a.data.number - b.data.number);
+---
+<Base title="Мышонок Мышь — сказки">
+  <section class="hero">
+    <div class="kicker">сказки у камыша</div>
+    <h1>Мышонок Мышь</h1>
+    <p>Маленький мышонок, у которого очень добрая душа. Каждый день он выходит из норки, знакомится с новым жителем своего мира и помогает ему.</p>
+    <p class="couplet">Жил да был мышонок Мышь,<br />Рос он там, где шумит камыш.</p>
+  </section>
+
+  <h2 class="section-title">Сказки <span class="count">{stories.length}</span></h2>
+  <div id="continue-slot"></div>
+  <div class="cards">
+    {stories.map((s) => (
+      <a class="card" data-story={s.data.number} data-title={s.data.title} href={`${base}/skazki/${s.data.number}`}>
+        <span class="read-badge" hidden>✓ прочитано</span>
+        <div class="num">Сказка {s.data.number}</div>
+        <h3>{s.data.title}</h3>
+        <div class="meta">Прогулка: {s.data.place}</div>
+      </a>
+    ))}
+  </div>
+
+  <script is:inline>
+    (function () {
+      var base = window.__BASE__ || '';
+      var h = {};
+      try { h = JSON.parse(localStorage.getItem('mt-history') || '{}'); } catch (e) {}
+      var read = h.read || {};
+      document.querySelectorAll('[data-story]').forEach(function (card) {
+        var n = card.getAttribute('data-story');
+        if (read[n]) {
+          card.classList.add('is-read');
+          var b = card.querySelector('.read-badge');
+          if (b) b.hidden = false;
+        }
+      });
+      if (h.last) {
+        var card = document.querySelector('[data-story="' + h.last + '"]');
+        var title = card ? card.getAttribute('data-title') : ('Сказка ' + h.last);
+        var slot = document.getElementById('continue-slot');
+        if (slot) {
+          var a = document.createElement('a');
+          a.className = 'continue';
+          a.href = base + '/skazki/' + h.last;
+          a.textContent = 'Продолжить чтение: «' + title + '» →';
+          slot.appendChild(a);
+        }
+      }
+    })();
+  </script>
+</Base>

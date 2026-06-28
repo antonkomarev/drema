@@ -1,0 +1,365 @@
+/* ============================================================
+   Мышонок Мышь — глобальные стили
+   День/ночь тема + настройки чтения (размер шрифта, интервал)
+   ============================================================ */
+
+/* --- Цветовые токены: ДЕНЬ (светлая тема) --- */
+:root {
+  --bg:        #e9ebdd;   /* мягкая луговая бумага */
+  --bg-soft:   #eff1e6;
+  --surface:   #f7f8f0;   /* карточки */
+  --surface-2: #f0f2e7;
+  --text:      #2e3326;   /* мховые чернила */
+  --muted:     #6a7060;
+  --line:      #d4d7c5;   /* тонкие линии */
+  --accent:    #5360b0;   /* колокольчик (синева) */
+  --accent-soft: #e4e6f4;
+  --leaf:      #6f9350;   /* луговая зелень — «что узнал» */
+  --leaf-soft: #e3ecda;
+  --shadow:    rgba(46, 51, 38, 0.10);
+
+  /* Настройки чтения (управляются скриптом) */
+  --reading-size: 1.18rem;     /* размер шрифта текста сказки */
+  --reading-leading: 1.78;     /* межстрочный интервал */
+
+  /* Типографика */
+  --font-display: "Kurale", Georgia, serif;
+  --font-body: "Literata", Georgia, serif;
+
+  --maxw: 46rem;
+  --radius: 16px;
+}
+
+/* --- Цветовые токены: НОЧЬ (тёмная тема) --- */
+:root[data-theme="dark"] {
+  --bg:        #14171c;   /* сумерки над камышом */
+  --bg-soft:   #181c22;
+  --surface:   #1d222a;
+  --surface-2: #222833;
+  --text:      #e7e8df;
+  --muted:     #9aa091;
+  --line:      #2c333d;
+  --accent:    #93a0ee;   /* колокольчик светится в темноте */
+  --accent-soft: #232a3d;
+  --leaf:      #9cc079;
+  --leaf-soft: #232c20;
+  --shadow:    rgba(0, 0, 0, 0.35);
+}
+
+/* Плавный, спокойный переход смены темы (но не для тех, кто его отключил) */
+@media (prefers-reduced-motion: no-preference) {
+  body, .card, .panel, header, footer {
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 1.25rem; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- Шапка ---------- */
+header.site {
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-soft);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(6px);
+}
+.site-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0.7rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.brand:hover { text-decoration: none; }
+.nav { display: flex; gap: 1rem; align-items: center; }
+.nav a { color: var(--muted); font-size: 0.98rem; }
+.nav a:hover { color: var(--text); text-decoration: none; }
+
+/* ---------- Настройки чтения (панель) ---------- */
+.reading-toggle {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.reading-toggle:hover { border-color: var(--accent); }
+
+.panel {
+  position: fixed;
+  right: 1rem;
+  top: 4rem;
+  width: min(20rem, calc(100vw - 2rem));
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 14px 40px var(--shadow);
+  padding: 1.1rem 1.15rem 1.25rem;
+  z-index: 40;
+  display: none;
+}
+.panel[data-open="true"] { display: block; }
+.panel h3 {
+  font-family: var(--font-display);
+  margin: 0 0 0.85rem;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+.panel .row { margin-bottom: 1rem; }
+.panel .row:last-child { margin-bottom: 0; }
+.panel .label {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.45rem;
+}
+.seg {
+  display: flex;
+  gap: 0.35rem;
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 0.25rem;
+}
+.seg button {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 0.4rem 0.2rem;
+  border-radius: 7px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+}
+.seg button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px var(--shadow);
+}
+.seg button:hover { color: var(--text); }
+
+/* ---------- Главная ---------- */
+.hero {
+  text-align: center;
+  padding: 3.2rem 0 1.6rem;
+}
+.hero .kicker {
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  margin: 0.5rem 0 0.6rem;
+  line-height: 1.05;
+}
+.hero p { color: var(--muted); max-width: 32rem; margin: 0 auto; }
+.couplet {
+  font-family: var(--font-display);
+  font-style: normal;
+  color: var(--accent);
+  margin: 1.4rem auto 0;
+  line-height: 1.7;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.5rem;
+  margin: 2.4rem 0 1rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+.section-title .count { font-size: 0.95rem; color: var(--muted); font-family: var(--font-body); }
+
+/* ---------- Карточки ---------- */
+.cards { display: grid; gap: 0.9rem; }
+.card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.2rem;
+  color: var(--text);
+}
+.card:hover { text-decoration: none; border-color: var(--accent); box-shadow: 0 8px 24px var(--shadow); }
+.card .num {
+  font-family: var(--font-display);
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+.card h3 { font-family: var(--font-display); font-weight: 400; margin: 0.15rem 0 0.3rem; font-size: 1.3rem; }
+.card .meta { color: var(--muted); font-size: 0.92rem; }
+.card .emoji { font-size: 1.4rem; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: 0.9rem; }
+@media (min-width: 34rem) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+.fact-list { margin: 0.6rem 0 0; padding-left: 1.1rem; }
+.fact-list li { margin: 0.3rem 0; color: var(--text); }
+
+/* ---------- Чтение сказки ---------- */
+.story-head { padding: 2.4rem 0 0.6rem; }
+.story-head .num { font-family: var(--font-display); color: var(--accent); }
+.story-head h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 6vw, 2.9rem);
+  margin: 0.3rem 0 0.4rem;
+}
+.story-head .meta { color: var(--muted); font-size: 0.95rem; }
+
+.story {
+  font-size: var(--reading-size);
+  line-height: var(--reading-leading);
+  padding: 1rem 0 2rem;
+}
+.story p { margin: 0 0 1.15rem; }
+/* первое двустишие — выделим */
+.story p:first-of-type {
+  font-family: var(--font-display);
+  color: var(--accent);
+  font-size: 1.08em;
+}
+
+.learned {
+  border-top: 1px solid var(--line);
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+}
+.learned h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; margin: 0 0 0.8rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+.chip.friend:hover { border-color: var(--accent); text-decoration: none; }
+.chip.thing { }
+.chip.thing:hover { border-color: var(--leaf); text-decoration: none; }
+
+.pager { display: flex; justify-content: space-between; gap: 1rem; margin: 1.5rem 0 3rem; }
+.pager a { font-size: 0.95rem; }
+
+/* ---------- Бейджи раздела ---------- */
+.tag {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+.tag.friend { background: var(--accent-soft); color: var(--accent); }
+.tag.thing  { background: var(--leaf-soft);  color: var(--leaf); }
+
+/* ---------- Подвал ---------- */
+footer.site {
+  border-top: 1px solid var(--line);
+  margin-top: 2rem;
+  padding: 1.6rem 0 2.6rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+footer .owl { font-style: italic; }
+
+/* фокус для клавиатуры */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* ---------- История чтения (localStorage) ---------- */
+.card { position: relative; }
+.read-badge {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.8rem;
+  font-size: 0.74rem;
+  color: var(--leaf);
+  background: var(--leaf-soft);
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  letter-spacing: 0.02em;
+}
+.card.is-read { border-color: var(--leaf-soft); }
+.card.is-read h3 { color: var(--muted); }
+
+.continue {
+  display: block;
+  background: var(--accent-soft);
+  border: 1px solid transparent;
+  color: var(--accent);
+  border-radius: var(--radius);
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 0.9rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+.continue:hover { text-decoration: none; border-color: var(--accent); }
+
+.mark-read {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.4rem 0.95rem;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  cursor: pointer;
+  margin-top: 0.4rem;
+}
+.mark-read:hover { border-color: var(--leaf); }
+.mark-read[aria-pressed="true"] { color: var(--leaf); border-color: var(--leaf); background: var(--leaf-soft); }
+
+.link-btn {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+.link-btn:hover { color: var(--text); }

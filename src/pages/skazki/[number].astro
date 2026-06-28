@@ -1,0 +1,102 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { getCharacter, getThing } from '../../lib/memory';
+const base = import.meta.env.BASE_URL;
+
+export async function getStaticPaths() {
+  const stories = await getCollection('stories');
+  return stories.map((s) => ({
+    params: { number: String(s.data.number) },
+    props: { story: s },
+  }));
+}
+
+const { story } = Astro.props;
+const { Content } = await story.render();
+
+const chars = story.data.characters.map(getCharacter).filter(Boolean);
+const things = story.data.things.map(getThing).filter(Boolean);
+
+const all = (await getCollection('stories')).sort((a, b) => a.data.number - b.data.number);
+const idx = all.findIndex((s) => s.data.number === story.data.number);
+const prev = all[idx - 1];
+const next = all[idx + 1];
+---
+<Base title={`Сказка ${story.data.number}. ${story.data.title}`}>
+  <div class="story-head">
+    <div class="num">Сказка {story.data.number}</div>
+    <h1>{story.data.title}</h1>
+    <div class="meta">Прогулка: {story.data.place}</div>
+  </div>
+
+  <button id="mark-read" class="mark-read" aria-pressed="false">Отметить прочитанной</button>
+
+  <article class="story">
+    <Content />
+  </article>
+
+  {(chars.length > 0 || things.length > 0) && (
+    <section class="learned">
+      {chars.length > 0 && (
+        <>
+          <h2>Мышонок познакомился</h2>
+          <div class="chips">
+            {chars.map((c) => (
+              <a class="chip friend" href={`${base}/creatures/${c.id}`}>
+                <span aria-hidden="true">{c.emoji}</span> {c.name}
+              </a>
+            ))}
+          </div>
+        </>
+      )}
+      {things.length > 0 && (
+        <>
+          <h2 style="margin-top:1.2rem">…и узнал, что такое</h2>
+          <div class="chips">
+            {things.map((t) => (
+              <a class="chip thing" href={`${base}/things/${t.id}`}>
+                <span aria-hidden="true">{t.emoji}</span> {t.name}
+              </a>
+            ))}
+          </div>
+        </>
+      )}
+    </section>
+  )}
+
+  <nav class="pager">
+    {prev ? <a href={`${base}/skazki/${prev.data.number}`}>← {prev.data.title}</a> : <span></span>}
+    {next ? <a href={`${base}/skazki/${next.data.number}`}>{next.data.title} →</a> : <span></span>}
+  </nav>
+
+  <script is:inline define:vars={{ storyNumber: story.data.number }}>
+    (function () {
+      var n = String(storyNumber);
+      var KEY = 'mt-history';
+      function get() { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { return {}; } }
+      function set(h) { try { localStorage.setItem(KEY, JSON.stringify(h)); } catch (e) {} }
+
+      // Запомнить, что эту сказку открывали (для «Продолжить чтение»).
+      var h = get();
+      h.read = h.read || {};
+      h.last = Number(n);
+      set(h);
+
+      var btn = document.getElementById('mark-read');
+      function render() {
+        var on = !!(get().read || {})[n];
+        btn.setAttribute('aria-pressed', String(on));
+        btn.textContent = on ? '✓ Прочитано' : 'Отметить прочитанной';
+      }
+      btn.addEventListener('click', function () {
+        var hh = get();
+        hh.read = hh.read || {};
+        if (hh.read[n]) delete hh.read[n]; else hh.read[n] = Date.now();
+        set(hh);
+        render();
+      });
+      render();
+    })();
+  </script>
+</Base>

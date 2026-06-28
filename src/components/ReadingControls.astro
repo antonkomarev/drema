@@ -1,0 +1,104 @@
+---
+// Панель настроек чтения: тема (день/ночь), размер шрифта, межстрочный интервал.
+// Логика на чистом JS, выбор сохраняется в localStorage.
+---
+
+<button class="reading-toggle" id="rc-open" aria-haspopup="true" aria-expanded="false">
+  <span id="rc-theme-icon">☾</span><span>Чтение</span>
+</button>
+
+<div class="panel" id="rc-panel" data-open="false" role="dialog" aria-label="Настройки чтения">
+  <h3>Как читать удобнее</h3>
+
+  <div class="row">
+    <div class="label">Тема</div>
+    <div class="seg" id="seg-theme">
+      <button data-val="light" aria-pressed="true">☀ День</button>
+      <button data-val="dark" aria-pressed="false">☾ Ночь</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="label">Размер шрифта</div>
+    <div class="seg" id="seg-size">
+      <button data-val="s" aria-pressed="false">А</button>
+      <button data-val="m" aria-pressed="true">А</button>
+      <button data-val="l" aria-pressed="false">А</button>
+      <button data-val="xl" aria-pressed="false">А</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="label">Межстрочный интервал</div>
+    <div class="seg" id="seg-leading">
+      <button data-val="compact" aria-pressed="false">Плотно</button>
+      <button data-val="normal" aria-pressed="true">Обычно</button>
+      <button data-val="airy" aria-pressed="false">Просторно</button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var root = document.documentElement;
+    var SIZE = { s: '1.02rem', m: '1.18rem', l: '1.34rem', xl: '1.55rem' };
+    var LEAD = { compact: '1.5', normal: '1.78', airy: '2.1' };
+
+    function setPressed(segId, val) {
+      var seg = document.getElementById(segId);
+      if (!seg) return;
+      seg.querySelectorAll('button').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b.dataset.val === val));
+      });
+    }
+
+    function applyTheme(val) {
+      root.dataset.theme = val;
+      localStorage.setItem('mt-theme', val);
+      var icon = document.getElementById('rc-theme-icon');
+      if (icon) icon.textContent = val === 'dark' ? '☀' : '☾';
+      setPressed('seg-theme', val);
+    }
+    function applySize(val) {
+      root.style.setProperty('--reading-size', SIZE[val]);
+      localStorage.setItem('mt-size', val);
+      setPressed('seg-size', val);
+    }
+    function applyLeading(val) {
+      root.style.setProperty('--reading-leading', LEAD[val]);
+      localStorage.setItem('mt-leading', val);
+      setPressed('seg-leading', val);
+    }
+
+    // Восстановить сохранённое (тема уже могла быть выставлена в <head>)
+    applyTheme(root.dataset.theme || localStorage.getItem('mt-theme') || 'light');
+    applySize(localStorage.getItem('mt-size') || 'm');
+    applyLeading(localStorage.getItem('mt-leading') || 'normal');
+
+    // Открытие/закрытие панели
+    var open = document.getElementById('rc-open');
+    var panel = document.getElementById('rc-panel');
+    open.addEventListener('click', function () {
+      var isOpen = panel.dataset.open === 'true';
+      panel.dataset.open = String(!isOpen);
+      open.setAttribute('aria-expanded', String(!isOpen));
+    });
+    document.addEventListener('click', function (e) {
+      if (!panel.contains(e.target) && !open.contains(e.target)) {
+        panel.dataset.open = 'false';
+        open.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Клики по сегментам
+    document.getElementById('seg-theme').addEventListener('click', function (e) {
+      if (e.target.dataset.val) applyTheme(e.target.dataset.val);
+    });
+    document.getElementById('seg-size').addEventListener('click', function (e) {
+      if (e.target.dataset.val) applySize(e.target.dataset.val);
+    });
+    document.getElementById('seg-leading').addEventListener('click', function (e) {
+      if (e.target.dataset.val) applyLeading(e.target.dataset.val);
+    });
+  })();
+</script>
