@@ -38,11 +38,25 @@ const base = import.meta.env.BASE_URL;
       <div class="site-inner">
         <a class="brand" href={base}><span aria-hidden="true">🐭</span> Мыш-мышь</a>
         <nav class="nav">
-          <a href={base}>Сказки</a>
-          <a href={`${base}/creatures`}>Существа</a>
-          <a href={`${base}/things`}>Вещи</a>
-          <a href={`${base}/places`}>Места</a>
-          <ReadingControls />
+          <button
+            class="nav-toggle"
+            id="nav-toggle"
+            type="button"
+            aria-label="Меню"
+            aria-controls="nav-menu"
+            aria-expanded="false"
+          >
+            <span class="nav-toggle-bar" aria-hidden="true"></span>
+            <span class="nav-toggle-bar" aria-hidden="true"></span>
+            <span class="nav-toggle-bar" aria-hidden="true"></span>
+          </button>
+          <div class="nav-menu" id="nav-menu" data-open="false">
+            <a href={base}>Сказки</a>
+            <a href={`${base}/creatures`}>Существа</a>
+            <a href={`${base}/things`}>Вещи</a>
+            <a href={`${base}/places`}>Места</a>
+            <ReadingControls />
+          </div>
         </nav>
       </div>
     </header>
@@ -65,6 +79,31 @@ const base = import.meta.env.BASE_URL;
           try { localStorage.removeItem('mt-history'); } catch (e) {}
           location.reload();
         });
+
+        // Мобильное меню-гамбургер
+        var toggle = document.getElementById('nav-toggle');
+        var menu = document.getElementById('nav-menu');
+        if (toggle && menu) {
+          function setMenu(open) {
+            menu.dataset.open = String(open);
+            toggle.setAttribute('aria-expanded', String(open));
+          }
+          toggle.addEventListener('click', function () {
+            setMenu(menu.dataset.open !== 'true');
+          });
+          // Клик по ссылке закрывает меню
+          menu.querySelectorAll('a').forEach(function (a) {
+            a.addEventListener('click', function () { setMenu(false); });
+          });
+          // Клик вне меню закрывает его
+          document.addEventListener('click', function (e) {
+            if (!menu.contains(e.target) && !toggle.contains(e.target)) setMenu(false);
+          });
+          // Esc закрывает меню
+          document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') setMenu(false);
+          });
+        }
       })();
     </script>
   </body>
