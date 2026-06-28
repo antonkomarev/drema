@@ -104,9 +104,69 @@ header.site {
   gap: 0.5rem;
 }
 .brand:hover { text-decoration: none; }
-.nav { display: flex; gap: 1rem; align-items: center; }
-.nav a { color: var(--muted); font-size: 0.98rem; }
-.nav a:hover { color: var(--text); text-decoration: none; }
+.brand { white-space: nowrap; }
+.nav { display: flex; align-items: center; }
+.nav-menu { display: flex; gap: 1rem; align-items: center; }
+.nav-menu a { color: var(--muted); font-size: 0.98rem; }
+.nav-menu a:hover { color: var(--text); text-decoration: none; }
+
+/* Кнопка-гамбургер — видна только на узких экранах */
+.nav-toggle { display: none; }
+
+@media (max-width: 38rem) {
+  .nav-toggle {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .nav-toggle:hover { border-color: var(--accent); }
+  .nav-toggle-bar {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: var(--text);
+    border-radius: 2px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) { opacity: 0; }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .nav-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0.4rem 1.25rem 1rem;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 14px 40px var(--shadow);
+  }
+  .nav-menu[data-open="true"] { display: flex; }
+  .nav-menu a {
+    font-size: 1.08rem;
+    padding: 0.7rem 0;
+    border-top: 1px solid var(--line);
+  }
+  .nav-menu a:first-child { border-top: 0; }
+  .nav-menu .reading-toggle { margin-top: 0.8rem; align-self: flex-start; }
+}
 
 /* ---------- Настройки чтения (панель) ---------- */
 .reading-toggle {
