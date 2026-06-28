@@ -4,7 +4,7 @@
 ---
 
 <button class="reading-toggle" id="rc-open" aria-haspopup="true" aria-expanded="false">
-  <span id="rc-theme-icon">☾</span><span>Чтение</span>
+  <span id="rc-theme-icon" aria-hidden="true">🌙</span><span>Настройки</span>
 </button>
 
 <div class="panel" id="rc-panel" data-open="false" role="dialog" aria-label="Настройки чтения">
@@ -13,8 +13,8 @@
   <div class="row">
     <div class="label">Тема</div>
     <div class="seg" id="seg-theme">
-      <button data-val="light" aria-pressed="true">☀ День</button>
-      <button data-val="dark" aria-pressed="false">☾ Ночь</button>
+      <button data-val="light" aria-pressed="true">🌞 День</button>
+      <button data-val="dark" aria-pressed="false">🌙 Ночь</button>
     </div>
   </div>
 
@@ -56,7 +56,7 @@
       root.dataset.theme = val;
       localStorage.setItem('mt-theme', val);
       var icon = document.getElementById('rc-theme-icon');
-      if (icon) icon.textContent = val === 'dark' ? '☀' : '☾';
+      if (icon) icon.textContent = val === 'dark' ? '🌞' : '🌙';
       setPressed('seg-theme', val);
     }
     function applySize(val) {

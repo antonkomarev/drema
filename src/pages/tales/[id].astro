@@ -7,7 +7,7 @@ const base = import.meta.env.BASE_URL;
 export async function getStaticPaths() {
   const stories = await getCollection('stories');
   return stories.map((s) => ({
-    params: { slug: s.id },
+    params: { id: s.id },
     props: { story: s },
   }));
 }
