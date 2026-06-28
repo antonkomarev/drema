@@ -16,7 +16,7 @@ const stories = (await getCollection('stories')).sort((a, b) => a.data.number - 
   <div id="continue-slot"></div>
   <div class="cards">
     {stories.map((s) => (
-      <a class="card" data-story={s.data.number} data-title={s.data.title} href={`${base}/tales/${s.slug}`}>
+      <a class="card" data-story={s.data.number} data-title={s.data.title} href={`${base}/tales/${s.id}`}>
         <span class="read-badge" hidden>✓ прочитано</span>
         <div class="num">Сказка {s.data.number}</div>
         <h3>{s.data.title}</h3>

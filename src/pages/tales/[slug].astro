@@ -1,19 +1,19 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { getCharacter, getThing } from '../../lib/memory';
 const base = import.meta.env.BASE_URL;
 
 export async function getStaticPaths() {
   const stories = await getCollection('stories');
   return stories.map((s) => ({
-    params: { slug: s.slug },
+    params: { slug: s.id },
     props: { story: s },
   }));
 }
 
 const { story } = Astro.props;
-const { Content } = await story.render();
+const { Content } = await render(story);
 
 const chars = story.data.characters.map(getCharacter).filter(Boolean);
 const things = story.data.things.map(getThing).filter(Boolean);
@@ -66,8 +66,8 @@ const next = all[idx + 1];
   )}
 
   <nav class="pager">
-    {prev ? <a href={`${base}/tales/${prev.slug}`}>← {prev.data.title}</a> : <span></span>}
-    {next ? <a href={`${base}/tales/${next.slug}`}>{next.data.title} →</a> : <span></span>}
+    {prev ? <a href={`${base}/tales/${prev.id}`}>← {prev.data.title}</a> : <span></span>}
+    {next ? <a href={`${base}/tales/${next.id}`}>{next.data.title} →</a> : <span></span>}
   </nav>
 
   <script is:inline define:vars={{ storyNumber: story.data.number }}>

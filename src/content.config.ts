@@ -1,9 +1,10 @@
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 // Сказки — проза в Markdown + frontmatter.
 // Персонажи и вещи («память») вынесены в src/data/*.yaml и грузятся через src/lib/memory.ts.
 const stories = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '*.md', base: './src/content/stories' }),
   schema: z.object({
     number: z.number(),                          // порядковый номер
     title: z.string(),                           // название

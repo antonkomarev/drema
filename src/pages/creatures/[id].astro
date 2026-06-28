@@ -30,7 +30,7 @@ const metStory = allStories.find((s) => s.data.number === character.metInStory);
     {metStory && (
       <p style="margin-top:1.4rem; color:var(--muted)">
         Познакомились в сказке{' '}
-        <a href={`${base}/tales/${metStory.slug}`}>«{metStory.data.title}»</a>.
+        <a href={`${base}/tales/${metStory.id}`}>«{metStory.data.title}»</a>.
       </p>
     )}
   </article>
