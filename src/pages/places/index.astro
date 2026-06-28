@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import { places } from '../../lib/memory';
+const base = import.meta.env.BASE_URL;
+---
+<Base title="Места">
+  <section class="hero" style="padding-bottom:0.5rem">
+    <div class="kicker">где гулял мышонок</div>
+    <h1>Места</h1>
+    <p>Луга, леса и воды, куда мышонок выходил из норки навстречу новым приключениям.</p>
+  </section>
+
+  <h2 class="section-title">Где гулял <span class="count">{places.length}</span></h2>
+  <div class="grid-2">
+    {places.map((p) => (
+      <a class="card" href={`${base}/places/${p.id}`}>
+        <span class="tag place">место</span>
+        <h3><span class="emoji" aria-hidden="true">{p.emoji}</span> {p.name}</h3>
+        <div class="meta">{p.whatIsIt}</div>
+        <ul class="fact-list">
+          {p.facts.slice(0, 2).map((f) => <li>{f}</li>)}
+        </ul>
+      </a>
+    ))}
+  </div>
+</Base>

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
+import { getPlace } from '../lib/memory';
 const base = import.meta.env.BASE_URL;
 
 const stories = (await getCollection('stories')).sort((a, b) => a.data.number - b.data.number);
@@ -20,7 +21,7 @@ const stories = (await getCollection('stories')).sort((a, b) => a.data.number - 
         <span class="read-badge" hidden>✓ прочитано</span>
         <div class="num">Сказка {s.data.number}</div>
         <h3>{s.data.title}</h3>
-        <div class="meta">Прогулка: {s.data.place}</div>
+        <div class="meta">Прогулка: {getPlace(s.data.place)?.name ?? s.data.place}</div>
       </a>
     ))}
   </div>

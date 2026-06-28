@@ -16,6 +16,8 @@
   --accent-soft: #e4e6f4;
   --leaf:      #6f9350;   /* луговая зелень — «что узнал» */
   --leaf-soft: #e3ecda;
+  --earth:     #b07f3f;   /* тёплая тропинка — «места» */
+  --earth-soft: #efe6d4;
   --shadow:    rgba(46, 51, 38, 0.10);
 
   /* Настройки чтения (управляются скриптом) */
@@ -43,6 +45,8 @@
   --accent-soft: #232a3d;
   --leaf:      #9cc079;
   --leaf-soft: #232c20;
+  --earth:     #d8b878;
+  --earth-soft: #2c2820;
   --shadow:    rgba(0, 0, 0, 0.35);
 }
 
@@ -206,6 +210,7 @@ header.site {
   font-weight: 400;
   font-size: 1.5rem;
   margin: 2.4rem 0 1rem;
+  scroll-margin-top: 4.5rem;
   display: flex;
   align-items: baseline;
   gap: 0.6rem;
@@ -294,6 +299,7 @@ header.site {
 }
 .tag.friend { background: var(--accent-soft); color: var(--accent); }
 .tag.thing  { background: var(--leaf-soft);  color: var(--leaf); }
+.tag.place  { background: var(--earth-soft); color: var(--earth); }
 
 /* ---------- Подвал ---------- */
 footer.site {

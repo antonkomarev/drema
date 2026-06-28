@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
-import { getCharacter, getThing } from '../../lib/memory';
+import { getCharacter, getThing, getPlace } from '../../lib/memory';
 const base = import.meta.env.BASE_URL;
 
 export async function getStaticPaths() {
@@ -17,6 +17,7 @@ const { Content } = await render(story);
 
 const chars = story.data.characters.map(getCharacter).filter(Boolean);
 const things = story.data.things.map(getThing).filter(Boolean);
+const place = getPlace(story.data.place);
 
 const all = (await getCollection('stories')).sort((a, b) => a.data.number - b.data.number);
 const idx = all.findIndex((s) => s.data.number === story.data.number);
@@ -27,7 +28,9 @@ const next = all[idx + 1];
   <div class="story-head">
     <div class="num">Сказка {story.data.number}</div>
     <h1>{story.data.title}</h1>
-    <div class="meta">Прогулка: {story.data.place}</div>
+    <div class="meta">Прогулка: {place
+      ? <a href={`${base}/places/${place.id}`}>{place.emoji} {place.name}</a>
+      : story.data.place}</div>
   </div>
 
   <article class="story">

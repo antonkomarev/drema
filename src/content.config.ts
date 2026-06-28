@@ -8,7 +8,7 @@ const stories = defineCollection({
   schema: z.object({
     number: z.number(),                          // порядковый номер
     title: z.string(),                           // название
-    place: z.string(),                           // где гулял (луг, лес, ...)
+    place: z.string(),                           // id места из places.yaml (meadow, ...)
     characters: z.array(z.string()).default([]), // id познакомившихся (из characters.yaml)
     things: z.array(z.string()).default([]),     // id узнанных вещей (из things.yaml)
     date: z.date().optional(),

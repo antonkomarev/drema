@@ -1,7 +1,7 @@
 ---
 number: 1
 title: "Знакомство с Кузнечиком"
-place: "луг"
+place: "meadow"
 characters: ["grasshopper"]
 things: ["spiderweb"]
 date: 2026-06-28
