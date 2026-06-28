@@ -1,10 +1,10 @@
 ---
-number: 1
+number: 2
 title: "Знакомство с Кузнечиком"
 place: "meadow"
 characters: ["grasshopper"]
 things: ["spiderweb"]
-date: 2026-06-28
+date: 2026-06-29
 ---
 
 Жил да был мышонок Мышь.<br>
